@@ -14,17 +14,18 @@ namespace ConsoleUI
             // carManager instance oluşturuldu
             ICarService carManager = new CarManager(new EfCarDal());
 
+            carManager.Add(new Car {BrandId=4,ColorId=3,ModelYear=2005,DailyPrice=123.345,Description="araba-2"});
             GetAllList(carManager);
 
-            foreach (var car in carManager.GetCarsByBrandId(1))
-            {
-                Console.WriteLine(car.Description);
-            }
+            //foreach (var car in carManager.GetCarsByBrandId(1))
+            //{
+            //    Console.WriteLine(car.Description);
+            //}
 
-            foreach (var car in carManager.GetCarsByColorId(2))
-            {
-                Console.WriteLine(car.Description);
-            }
+            //foreach (var car in carManager.GetCarsByColorId(2))
+            //{
+            //    Console.WriteLine(car.Description);
+            //}
 
         }
 
