@@ -31,20 +31,7 @@ namespace Business.Concrete
             {
                 return new ErrorResult(Messages.CarPriceInvalid);
             }
-
-
-                //if (car.Description.Length > 2 && car.DailyPrice > 0)
-                //{
-                //    _carDal.Add(car);
-                //}
-                //else
-                //{
-                //    Console.WriteLine("Araba Adı iki karakterden fazla olmalıdır.");
-                //    Console.WriteLine("Araba fiyatı 0 dan büyük olmalıdır.");
-                //}
-
-                
-            
+          
         }
 
         public IResult Delete(Car car)
