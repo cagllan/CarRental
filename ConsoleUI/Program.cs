@@ -11,11 +11,18 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            CarManager carManager = new CarManager(new EfCarDal());
+            AddUserTest();
+            AddCustomerTest();
+            AddRentaltest();
+
+
+            
+
+            //CarManager carManager = new CarManager(new EfCarDal());
 
             // ---ADD Car---
-            AddCarTest(carManager);
-           
+            //AddCarTest(carManager);
+
             // ---UPDATE Car---
             //UpdateCarTest(carManager);
 
@@ -29,7 +36,9 @@ namespace ConsoleUI
             //GetByIdCarTest(carManager);
 
             //  -- Car Details --/
-            CarDetailTest(carManager);
+            //CarDetailTest(carManager);
+
+            //GetAllCarList(carManager);
 
 
             BrandManager brandManager = new BrandManager(new EfBrandDal());
@@ -66,6 +75,31 @@ namespace ConsoleUI
             // --Delete Color--
             //DeleteColorTest(colorManager);
 
+        }
+
+        private static void AddRentaltest()
+        {
+            IRentalService rentalService = new RentalManager(new EfRentalDal());
+
+            rentalService.Add(new Rental
+            {
+                CarId = 2,
+                CustomerId = 1,
+                RentDate = new DateTime(2020, 6, 3, 12, 20, 12),
+                ReturnDate = null
+            });
+        }
+
+        private static void AddCustomerTest()
+        {
+            ICustomerService customerService = new CustomerManager(new EfCustomerDal());
+            customerService.Add(new Customer { UserId = 1004, CompanyName = "merkez" });
+        }
+
+        private static void AddUserTest()
+        {
+            IUserService userService = new UserManager(new EfUserDal());
+            userService.Add(new User { FirstName = "aslı", LastName = "sıla", Email = "aa111@gmail.com", Password = "122" });
         }
 
         private static void DeleteColorTest(ColorManager colorManager)
