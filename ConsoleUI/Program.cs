@@ -17,13 +17,13 @@ namespace ConsoleUI
 
             //IRentalService rentalService = new RentalManager(new EfRentalDal());
             //Rental rental = new Rental();
-            //rental.CarId = 7002;
-            //rental.CustomerId = 1004;
-            //rental.RentDate = new DateTime(2021,02,17);
+            //rental.CarId = 6;
+            //rental.CustomerId = 4;
+            //rental.RentDate = new DateTime(2021, 02, 17);
             ////rental.ReturnDate = null;
             //Console.WriteLine(rentalService.Add(rental).Message);
 
-            
+
 
             //CarManager carManager = new CarManager(new EfCarDal());
 

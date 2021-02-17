@@ -21,9 +21,10 @@ namespace Business.Concrete
 
         public IResult Add(Rental rental)
         {
-            var result = _rentalDal.Get(r => r.CarId == rental.CarId);
+                        
+            var result = CheckRentalObject(rental);
 
-            if(result == null || result.ReturnDate != null)
+            if(result.Data == null || result.Data.ReturnDate != null)
             {
                 _rentalDal.Add(rental);
                 return new SuccessResult(Messages.RentalAdded);
@@ -56,6 +57,21 @@ namespace Business.Concrete
         {
             _rentalDal.Update(rental);
             return new SuccessResult(Messages.RentalUpdated);
+        }
+
+        private IDataResult<Rental> CheckRentalObject(Rental rental)
+        {
+            var result = _rentalDal.GetAll(r => r.CarId == rental.CarId);            
+
+            if(result.Count < 1)
+            {                
+                return new ErrorDataResult<Rental>();
+            }
+
+            var lastItem = result[result.Count - 1];
+            return new SuccessDataResult<Rental>(lastItem);
+
+            
         }
     }
 }
