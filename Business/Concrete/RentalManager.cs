@@ -20,9 +20,15 @@ namespace Business.Concrete
         }
 
         public IResult Add(Rental rental)
-        {                        
-            _rentalDal.Add(rental);
-            return new SuccessResult(Messages.RentalAdded);
+        {
+            var result = _rentalDal.Get(r => r.CarId == rental.CarId);
+
+            if(result == null || result.ReturnDate != null)
+            {
+                _rentalDal.Add(rental);
+                return new SuccessResult(Messages.RentalAdded);
+            }
+            return new ErrorResult("Şu anda bu araba kiralanamaz");
         }
 
         public IResult Delete(Rental rental)
