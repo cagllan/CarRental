@@ -3,6 +3,7 @@ using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -25,16 +26,16 @@ namespace Business.Concrete
         [ValidationAspect(typeof(RentalValidator))]
         public IResult Add(Rental rental)
         {
-            
+            IResult result = BusinessRules.Run(CheckTheRentedCarBeenReturned(rental));
 
-            var result = CheckRentalObject(rental);
-
-            if(result.Data == null || result.Data.ReturnDate != null)
+            if(result != null)
             {
-                _rentalDal.Add(rental);
-                return new SuccessResult(Messages.RentalAdded);
+                return result;
             }
-            return new ErrorResult("Şu anda bu araba kiralanamaz");
+
+            _rentalDal.Add(rental);
+            return new SuccessResult(Messages.RentalAdded);
+            
         }
 
         public IResult Delete(Rental rental)
@@ -64,9 +65,10 @@ namespace Business.Concrete
             return new SuccessResult(Messages.RentalUpdated);
         }
 
-        private IDataResult<Rental> CheckRentalObject(Rental rental)
+       
+        private IDataResult<Rental> CheckCarIsExists(int carId)
         {
-            var result = _rentalDal.GetAll(r => r.CarId == rental.CarId);            
+            var result = _rentalDal.GetAll(r => r.CarId == carId);            
 
             if(result.Count < 1)
             {                
@@ -75,8 +77,19 @@ namespace Business.Concrete
 
             var lastItem = result[result.Count - 1];
             return new SuccessDataResult<Rental>(lastItem);
+        }
 
-            
+        
+        private IResult CheckTheRentedCarBeenReturned(Rental rental)
+        {
+            var result = CheckCarIsExists(rental.CarId);
+
+            if (result.Data == null || result.Data.ReturnDate != null)
+            {
+                
+                return new SuccessResult();
+            }
+            return new ErrorResult("Bu araba henüz teslim edilmemiş.");
         }
     }
 }

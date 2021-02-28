@@ -11,76 +11,7 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            //AddUserTest();
-            //AddCustomerTest();
-            //AddRentaltest();
-
-            //IRentalService rentalService = new RentalManager(new EfRentalDal());
-            //Rental rental = new Rental();
-            //rental.CarId = 6;
-            //rental.CustomerId = 4;
-            //rental.RentDate = new DateTime(2021, 02, 17);
-            ////rental.ReturnDate = null;
-            //Console.WriteLine(rentalService.Add(rental).Message);
-
-
-
-            //CarManager carManager = new CarManager(new EfCarDal());
-
-            // ---ADD Car---
-            //AddCarTest(carManager);
-
-            // ---UPDATE Car---
-            //UpdateCarTest(carManager);
-
-            // --DELETE Car--
-            //DeleteCarTest(carManager);
-
-            // ---Read Car---
-            //GetAllCarList(carManager);
-
-            // -- Get By Id Car --
-            //GetByIdCarTest(carManager);
-
-            //  -- Car Details --/
-            //CarDetailTest(carManager);
-
-            //GetAllCarList(carManager);
-
-
-            BrandManager brandManager = new BrandManager(new EfBrandDal());
-            // -- read brand--
-            //ReadBrandTest(brandManager);
-
-            // -- get by id brand--
-            //ReadBrandGetByIdTest(brandManager);
-
-            // ---Add Brand ---
-            //AddBrandTest(brandManager);
-
-            // ---Update Brand ---
-            //UpdateBrandTest(brandManager);
-
-            // ---Delete Brand ---
-            //DeleteBrandTest(brandManager);
-
-
-            ColorManager colorManager = new ColorManager(new EfColorDal());
-
-            // --read colors--
-            //ReadColorsTest(colorManager);
-
-            // -- get by id color --
-            //ReadGetByIdColorTest(colorManager);
-
-            // --Add Color--
-            //AddColorTest(colorManager);
-
-            // --Update Color--
-            //UpdateColorTest(colorManager);
-
-            // --Delete Color--
-            //DeleteColorTest(colorManager);
+            
 
         }
 
