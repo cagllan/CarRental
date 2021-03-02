@@ -34,11 +34,11 @@ namespace ConsoleUI
             customerService.Add(new Customer { UserId = 1004, CompanyName = "merkez" });
         }
 
-        private static void AddUserTest()
-        {
-            IUserService userService = new UserManager(new EfUserDal());
-            userService.Add(new User { FirstName = "aslı", LastName = "sıla", Email = "aa111@gmail.com", Password = "122" });
-        }
+        //private static void AddUserTest()
+        //{
+        //    IUserService userService = new UserManager(new EfUserDal());
+        //    userService.Add(new User { FirstName = "aslı", LastName = "sıla", Email = "aa111@gmail.com", Password = "122" });
+        //}
 
         private static void DeleteColorTest(ColorManager colorManager)
         {

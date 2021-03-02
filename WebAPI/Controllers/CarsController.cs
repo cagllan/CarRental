@@ -2,6 +2,7 @@
 using Business.Concrete;
 using DataAccess.Concrete.EntifyFramework;
 using Entities.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -23,6 +24,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getall")]
+        [Authorize(Roles ="Product.List")]
         public IActionResult GetAll()
         {
             
