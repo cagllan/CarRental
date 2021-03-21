@@ -1,8 +1,12 @@
 ﻿using Business.Abstract;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Business;
+using Core.Utilities.Helper;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,93 +17,112 @@ namespace Business.Concrete
     public class CarImageManager : ICarImageService
     {
         ICarImageDal _carImageDal;
-        ICarService _carService;
 
-
-        public CarImageManager(ICarImageDal carImageDal, ICarService carService)
+        public CarImageManager(ICarImageDal carImageDal)
         {
             _carImageDal = carImageDal;
-            _carService = carService;
         }
-
-        public IResult Add(CarImage carImage)
+        
+        [ValidationAspect(typeof(CarImageValidator))]
+        public IResult Add(IFormFile image, CarImage carImage)
         {
-            var results = BusinessRules.Run(CheckImageCountLimit(carImage.CarId));
-            if (results != null)
+
+            var result = BusinessRules.Run(MaximumImageLimit(carImage.CarId), ImageExtension(image.FileName));
+
+            if (result != null)
             {
-                return results;
+                return result;
             }
-            var addedCarImage = CreatedFile(carImage).Data;
+
+            carImage.ImagePath = ImageUploadHelper.AddImage(image);
+            carImage.Date = DateTime.Now;
+
             _carImageDal.Add(carImage);
-            return new SuccessResult();
+            return new SuccessResult("Yeni Resim Eklendi");
         }
 
         public IResult Delete(CarImage carImage)
         {
             
+            ImageUploadHelper.DeleteImage(carImage.ImagePath);
             _carImageDal.Delete(carImage);
-            return new SuccessResult();
+            return new SuccessResult("Resim silindi.");
         }
+
+
 
         public IDataResult<List<CarImage>> GetAll()
         {
-            return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll());
+            return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(), "Resimler listelendi");
         }
+
+
 
         public IDataResult<CarImage> GetById(int id)
         {
-            return new SuccessDataResult<CarImage>(_carImageDal.Get(p => p.Id == id));
+            return new SuccessDataResult<CarImage>(_carImageDal.Get(i => i.Id == id), "Resim listelendi");
         }
 
-        public IDataResult<List<CarImage>> GetImagesByCarId(int carId)
-        {
 
-            return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(c => c.CarId == carId));
+
+        public IDataResult<List<CarImage>> GetImagesByCarId(int id)
+        {
+            return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(i => i.CarId == id), "Resimler listelendi");
         }
 
-        public IResult Update(CarImage carImage)
+
+
+        [ValidationAspect(typeof(CarImageValidator))]
+        public IResult Update(IFormFile image, CarImage carImage)
         {
-            
-            _carImageDal.Update(carImage);
-            return new SuccessResult("Image updated");
+            var oldImagePath = _carImageDal.Get(i => i.Id == carImage.Id).ImagePath;
+
+
+            var result = BusinessRules.Run(MaximumImageLimit(carImage.CarId), ImageExtension(image.FileName));
+
+            if (result != null)
+            {
+                return result;
+            }
+
+            carImage.ImagePath = ImageUploadHelper.UpdateImage(image, oldImagePath);
+            carImage.Date = DateTime.Now;
+            _carImageDal.Update(carImage);            
+
+            return new SuccessResult("Resim güncellendi.");
         }
 
-        private IResult CheckImageCountLimit(int CarId)
+        private IResult MaximumImageLimit(int carId)
         {
-            var result = _carImageDal.GetAll(p => p.CarId == CarId);
+           var result =  _carImageDal.GetAll(i=>i.CarId == carId);
+
+           
             if (result.Count >= 5)
             {
                 return new ErrorResult("En fazla 5 resim ekleyebilirsiniz.");
-
             }
+
             return new SuccessResult();
-
         }
 
-
-        private IDataResult<CarImage> CreatedFile(CarImage carImage)
+        private IResult ImageExtension(string arg)
         {
-            string path = Path.Combine(Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).FullName + @"\Image");
-            var uniqueFilename = Guid.NewGuid().ToString("N")
-                + "CAR-" + carImage.CarId + "-" + DateTime.Now.ToShortDateString();
+            var imageExtension = Path.GetExtension(arg);
 
-            string source = Path.Combine(carImage.ImagePath);
+            List<string> extensions = new List<string> { ".jpg", ".jpeg", ".png", ".gif" };
 
-            string result = $@"{path}\{uniqueFilename}";
-
-            try
+            foreach (var extension in extensions)
             {
+                if (imageExtension == extension)
+                {
+                    return new SuccessResult();
+                }
 
-                File.Move(source, path + @"\" + uniqueFilename);
-            }
-            catch (Exception exception)
-            {
-
-                return new ErrorDataResult<CarImage>(exception.Message);
             }
 
-            return new SuccessDataResult<CarImage>(new CarImage { Id = carImage.Id, CarId = carImage.CarId, ImagePath = result, Date = DateTime.Now }, "resim eklendi");
-     
+            return new ErrorResult("Resim formatı uygun değil");
         }
+
+
     }
- }
+}

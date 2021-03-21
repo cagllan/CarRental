@@ -1,5 +1,4 @@
-﻿using Core.Entities.Concrete;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -40,5 +39,10 @@ namespace Business.Constants
         public static string UserAlreadyExists = "Kullanıcı mevcut";
         public static string UserRegistered = "Kullanıcı başarıyla kaydedildi";
         public static string AccessTokenCreated = "Access Token başarıyla oluşturuldu";
+
+        public static string BrandNameExists = "Model ismi kayıtlı.";
+        public static string DataIsNull = "Veri boş olamaz";
+        public static string MinBrandNameLength = "model ismi en az 2 karakter olmalı";
+        public static string MaxBrandNameLength = "model ismi 15 karakterden küçük olmalı";
     }
 }

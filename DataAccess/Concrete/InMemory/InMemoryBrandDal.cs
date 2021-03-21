@@ -49,6 +49,7 @@ namespace DataAccess.Concrete.InMemory
         {
             throw new NotImplementedException();
         }
+     
 
         public void Update(Brand brand)
         {
