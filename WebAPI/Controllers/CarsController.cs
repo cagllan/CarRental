@@ -159,9 +159,6 @@ namespace WebAPI.Controllers
         [HttpGet("getcardetailsbycolorid")]
         public IActionResult GetCarsDetailByColorId(int id)
         {
-
-           
-
             var result = _carService.GetCarsDetailsByColorId(id);
 
             foreach (var item in result.Data)
@@ -180,6 +177,31 @@ namespace WebAPI.Controllers
 
             return BadRequest(result);
         }
+
+
+        [HttpGet("getcardetailsbybrandandcolorid")]
+        public IActionResult GetCarDetailsByBrandAndColorid(int brandId,int colorId)
+        {
+            var result = _carService.GetCarDetailsByBrandAndColorid(brandId, colorId);
+
+            foreach (var item in result.Data)
+            {
+                if (item.CarImages.Count <= 0)
+                {
+                    item.CarImages.Add(new CarImage() { CarId = item.CarId, ImagePath = ImageUploadHelper.DefaultImagePath() });
+
+                }
+            }
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+
 
         [HttpPost("add")]
         public IActionResult Add(Car car)
