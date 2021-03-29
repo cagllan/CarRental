@@ -38,5 +38,9 @@ namespace DataAccess.Concrete.EntifyFramework
                 return result.ToList();
             }
         }
+
+
+
+        
     }
 }

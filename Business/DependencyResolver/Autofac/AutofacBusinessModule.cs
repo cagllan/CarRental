@@ -45,6 +45,8 @@ namespace Business.DependencyResolver.Autofac
 
             builder.RegisterType<JwtHelper>().As<ITokenHelper>().SingleInstance();
 
+            builder.RegisterType<BankManager>().As<IBankService>().SingleInstance();
+
 
 
 

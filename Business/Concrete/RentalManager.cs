@@ -2,6 +2,7 @@
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -24,9 +25,9 @@ namespace Business.Concrete
         [ValidationAspect(typeof(RentalValidator))]
         public IResult Add(Rental rental)
         {
-            IResult result = CheckTheRentedCarBeenReturned(rental);
+            IResult result = BusinessRules.Run(CheckTheRentedCarBeenReturned(rental));
 
-            if(result != null)
+            if (result != null)
             {
                 return result;
             }
@@ -48,10 +49,24 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(), Messages.RentalsListed);
         }
 
+
+
+
+
+        public IDataResult<List<Rental>> GetByCarId(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+
+
+
         public IDataResult<Rental> GetById(int id)
         {
             return new SuccessDataResult<Rental>(_rentalDal.Get(r => r.Id == id), Messages.RentalView);
         }
+
+       
 
         public IDataResult<List<RentalDetailDto>> GetRentalDetails()
         {
@@ -91,5 +106,7 @@ namespace Business.Concrete
             }
             return new ErrorResult("Bu araba henüz teslim edilmemiş.");
         }
+
+       
     }
 }
