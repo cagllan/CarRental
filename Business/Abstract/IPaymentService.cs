@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Business.Abstract
 {
-    public interface IBankService
+    public interface IPaymentService
     {
         IResult Add(Payment payment);
     }

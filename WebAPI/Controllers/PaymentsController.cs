@@ -11,19 +11,19 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BanksController : ControllerBase
+    public class PaymentsController : ControllerBase
     {
-        IBankService _bankService;
+        IPaymentService _paymentService;
 
-        public BanksController(IBankService bankService)
+        public PaymentsController(IPaymentService paymentService)
         {
-            _bankService = bankService;
+            _paymentService = paymentService;
         }
 
         [HttpPost("add")]
-        public IActionResult Add(Payment payment)
+        public IActionResult Add(Payment bank)
         {
-            var result = _bankService.Add(payment);
+            var result = _paymentService.Add(bank);
 
             if (result.Success)
             {

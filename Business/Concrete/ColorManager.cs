@@ -87,12 +87,12 @@ namespace Business.Concrete
         [ValidationAspect(typeof(ColorValidator))]
         public IResult Update(Color color)
         {
-            var result = BusinessRules.Run(ColorNameIsExists(color.Name));
+            //var result = BusinessRules.Run(ColorNameIsExists(color.Name));
 
-            if (result != null)
-            {
-                return result;
-            }
+            //if (result != null)
+            //{
+            //    return result;
+            //}
 
 
             _colorDal.Update(color);
@@ -107,9 +107,10 @@ namespace Business.Concrete
             var result = _colorDal.Get(b => b.Name == name);
             if (result == null)
             {
-                return new ErrorResult(Messages.BrandNameExists);
+                return new SuccessResult();
             }
-            return new SuccessResult();
+            
+            return new ErrorResult(Messages.BrandNameExists);
         }
 
         private IResult CheckColorId(int id)
