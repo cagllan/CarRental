@@ -30,6 +30,7 @@ namespace Business.Concrete
                 Email = userForRegisterDto.Email,
                 FirstName = userForRegisterDto.FirstName,
                 LastName = userForRegisterDto.LastName,
+                FindexScore = userForRegisterDto.FindexScore,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
                 Status = true

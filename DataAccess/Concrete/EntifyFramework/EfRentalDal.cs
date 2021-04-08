@@ -29,9 +29,11 @@ namespace DataAccess.Concrete.EntifyFramework
                              select new RentalDetailDto
                              {
                                  RentalId = r.Id,
+                                 CarId = r.CarId,
                                  CarName = b.Name,
                                  CustomerName = u.FirstName + " " + u.LastName,
                                  RentDate = r.RentDate,
+                                 EndDate = r.EndDate,
                                  ReturnDate = r.ReturnDate
                              };
 

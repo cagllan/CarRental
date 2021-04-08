@@ -50,23 +50,11 @@ namespace Business.Concrete
         }
 
 
-
-
-
-        public IDataResult<List<Rental>> GetByCarId(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-
-
-
         public IDataResult<Rental> GetById(int id)
         {
             return new SuccessDataResult<Rental>(_rentalDal.Get(r => r.Id == id), Messages.RentalView);
         }
 
-       
 
         public IDataResult<List<RentalDetailDto>> GetRentalDetails()
         {
@@ -107,6 +95,5 @@ namespace Business.Concrete
             return new ErrorResult("Bu araba henüz teslim edilmemiş.");
         }
 
-       
     }
 }

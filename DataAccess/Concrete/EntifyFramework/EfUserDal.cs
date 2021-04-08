@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using Core.Entities.Concrete;
+using Entities.DTOs;
 
 namespace DataAccess.Concrete.EntifyFramework
 {
@@ -28,5 +29,31 @@ namespace DataAccess.Concrete.EntifyFramework
 
             }
         }
+
+
+       
+
+
+        public UserDetailDto GetUserDetail(int id)
+        {
+            using (RentACarContext context = new RentACarContext())
+            {
+                var result = from u in context.Users                             
+                             where u.Id == id
+                             select new UserDetailDto
+                             {
+                                 UserId = u.Id,
+                                 FirstName = u.FirstName,
+                                 LastName = u.LastName,
+                                 Email = u.Email,
+                                 FindexScore = u.FindexScore
+                             };
+
+                return result.FirstOrDefault();
+
+            }
+        }
+
+       
     }
 }

@@ -61,6 +61,23 @@ namespace WebAPI.Controllers
         }
 
 
+        [HttpGet("getuserdetailbyuserid")]
+        public IActionResult GetUserDetailByUserId(int id)
+        {
+            var result = _userService.GetUserDetailByUserId(id);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+
+        
+
+
         [HttpPost("add")]
         public IActionResult Add(User user)
         {
