@@ -4,6 +4,7 @@ using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.Entities.Concrete;
 using Core.Utilities.Results;
+using Core.Utilities.Security.Hashing;
 using DataAccess.Abstract;
 using Entities.DTOs;
 using System;
@@ -65,15 +66,41 @@ namespace Business.Concrete
         }
 
         [ValidationAspect(typeof(UserValidator))]
-        public IResult Update(User user)
+        public IResult Update(UserUpdateDto userUpdateDto)
         {
+            var user = new User
+            {
+                Id = userUpdateDto.UserId,
+                Email = userUpdateDto.Email,
+                FirstName = userUpdateDto.FirstName,
+                LastName = userUpdateDto.LastName,
+                FindexScore = userUpdateDto.FindexScore,
+                Status = true
+            };
+
             _userDal.Update(user);
             return new SuccessResult(Messages.UserUpdated);
         }
 
-        public IResult UpdateWithPassword(User user, string password)
+        public IResult UpdateWithPassword(UserUpdateDto userUpdateDto, string password)
         {
-            throw new NotImplementedException();
+            byte[] passwordHash, passwordSalt;
+            HashingHelper.CreatePasswordHash(password, out passwordHash, out passwordSalt);
+
+            var user = new User
+            {
+                Id = userUpdateDto.UserId,
+                Email = userUpdateDto.Email,
+                FirstName = userUpdateDto.FirstName,
+                LastName = userUpdateDto.LastName,
+                FindexScore = userUpdateDto.FindexScore,
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                Status = true
+            };
+
+            _userDal.Update(user);
+            return new SuccessResult(Messages.UserUpdated);
         }
     }
 }

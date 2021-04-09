@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Core.Entities.Concrete;
+using Entities.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -92,9 +93,10 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("update")]
-        public IActionResult Update(User user)
+        public IActionResult Update(UserUpdateDto userUpdateDto)
         {
-            var result = _userService.Update(user);
+            var result = userUpdateDto.Password == null ? _userService.Update(userUpdateDto) : _userService.UpdateWithPassword(userUpdateDto, userUpdateDto.Password);
+
 
             if (result.Success)
             {
@@ -102,6 +104,9 @@ namespace WebAPI.Controllers
             }
 
             return BadRequest(result);
+
+
+
         }
 
         [HttpPost("delete")]
