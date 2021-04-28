@@ -95,7 +95,7 @@ namespace WebAPI.Controllers
         [HttpPost("update")]
         public IActionResult Update(UserUpdateDto userUpdateDto)
         {
-            var result = userUpdateDto.Password == null ? _userService.Update(userUpdateDto) : _userService.UpdateWithPassword(userUpdateDto, userUpdateDto.Password);
+            var result = userUpdateDto.Password == null ? _userService.Update(userUpdateDto) : _userService.Update(userUpdateDto, userUpdateDto.Password);
 
 
             if (result.Success)

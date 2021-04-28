@@ -68,6 +68,9 @@ namespace Business.Concrete
         [ValidationAspect(typeof(UserValidator))]
         public IResult Update(UserUpdateDto userUpdateDto)
         {
+
+            var result = GetById(userUpdateDto.UserId);
+
             var user = new User
             {
                 Id = userUpdateDto.UserId,
@@ -75,6 +78,8 @@ namespace Business.Concrete
                 FirstName = userUpdateDto.FirstName,
                 LastName = userUpdateDto.LastName,
                 FindexScore = userUpdateDto.FindexScore,
+                PasswordHash = result.Data.PasswordHash,
+                PasswordSalt = result.Data.PasswordSalt,
                 Status = true
             };
 
@@ -82,7 +87,7 @@ namespace Business.Concrete
             return new SuccessResult(Messages.UserUpdated);
         }
 
-        public IResult UpdateWithPassword(UserUpdateDto userUpdateDto, string password)
+        public IResult Update(UserUpdateDto userUpdateDto, string password)
         {
             byte[] passwordHash, passwordSalt;
             HashingHelper.CreatePasswordHash(password, out passwordHash, out passwordSalt);
